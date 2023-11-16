@@ -1,0 +1,119 @@
+git add .
+git commit -m "Primeiro commit com meu código"
+git push origin master
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@SpringBootApplication
+public class PlayerComparisonApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(PlayerComparisonApplication.class, args);
+    }
+
+    @RestController
+    @RequestMapping("/players")
+    static class PlayerController {
+
+        private static List<Player> players = new ArrayList<>();
+
+        static {
+            players.add(new Player("Messi", 90, 80, 87, 90, 94, 33, 64));
+            players.add(new Player("Benzema", 90, 79, 88, 83, 87, 39, 78));
+            players.add(new Player("Courtois", 90, 85, 89, 76, 93, 46, 90));
+            players.add(new Player("Harry Kane", 90, 69, 93, 84, 83, 49, 83));
+            players.add(new Player("Lewandowski", 90, 75, 91, 80, 87, 44, 84));
+            players.add(new Player("Salah", 89, 89, 87, 81, 88, 45, 76));
+            players.add(new Player("Ruben Dias", 89, 62, 39, 66, 69, 89, 87));
+            players.add(new Player("Vinicius Jr", 89, 95, 82, 78, 90, 29, 68));
+            players.add(new Player("Rodri", 89, 58, 73, 80, 80, 85, 84));
+            players.add(new Player("Neymar", 89, 86, 83, 85, 93, 37, 61));
+            players.add(new Player("Ter Stegen", 89, 86, 85, 89, 91, 47, 86));
+            players.add(new Player("Van Dijk", 89, 78, 60, 71, 72, 89, 86));
+            players.add(new Player("Alisson", 89, 86, 85, 85, 89, 56, 90));
+            players.add(new Player("Casemiro", 89, 63, 75, 79, 73, 89, 88));
+            players.add(new Player("Bruno Fernandes", 88, 71, 86, 90, 83, 69, 77));
+            players.add(new Player("Griezmann", 88, 80, 88, 87, 88, 58, 75));
+            players.add(new Player("Osimhen", 88, 90, 86, 66, 83, 42, 82));
+            players.add(new Player("Bernardo Silva", 88, 69, 78, 86, 92, 70, 69));
+            players.add(new Player("Valverde", 88, 88, 82, 84, 84, 80, 82));
+            players.add(new Player("Ederson", 88, 86, 82, 91, 86, 64, 86));
+            players.add(new Player("Kimmich", 88, 70, 74, 88, 84, 82, 79));
+            players.add(new Player("Oblak", 88, 85, 90, 78, 87, 46, 86));
+            players.add(new Player("Modric", 87, 72, 76, 89, 87, 72, 66));
+            players.add(new Player("De Jong", 87, 82, 69, 86, 87, 77, 78));
+            players.add(new Player("Martinez", 87, 80, 86, 71, 85, 48, 85));
+            players.add(new Player("Odegaard", 87, 72, 81, 88, 87, 61, 64));
+            players.add(new Player("Maignan", 87, 85, 82, 87, 89, 51, 85));
+        }
+
+        @GetMapping("/search")
+        public List<Player> searchPlayers() {
+            return players;
+        }
+
+        @GetMapping("/compare/{name1}/{name2}")
+        public String comparePlayers(@PathVariable String name1, @PathVariable String name2) {
+            Player player1 = findPlayerByName(name1);
+            Player player2 = findPlayerByName(name2);
+
+            if (player1 == null || player2 == null) {
+                return "Jogador não encontrado.";
+            }
+
+            return "Comparação:\n" +
+                    "Jogador 1:\n" + player1.toString() + "\n\n" +
+                    "Jogador 2:\n" + player2.toString();
+        }
+
+        private Player findPlayerByName(String name) {
+            return players.stream()
+                    .filter(player -> player.getName().equalsIgnoreCase(name))
+                    .findFirst()
+                    .orElse(null);
+        }
+    }
+
+    static class Player {
+        private String name;
+        private int pace;
+        private int shooting;
+        private int passing;
+        private int dribbling;
+        private int defending;
+        private int physicality;
+        private int overall;
+
+        public Player(String name, int pace, int shooting, int passing, int dribbling, int defending, int physicality, int overall) {
+            this.name = name;
+            this.pace = pace;
+            this.shooting = shooting;
+            this.passing = passing;
+            this.dribbling = dribbling;
+            this.defending = defending;
+            this.physicality = physicality;
+            this.overall = overall;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public String toString() {
+            return "Nome: " + name +
+                    "\nPace: " + pace +
+                    "\nShooting: " + shooting +
+                    "\nPassing: " + passing +
+                    "\nDribbling: " + dribbling +
+                    "\nDefending: " + defending +
+                    "\nPhysicality: " + physicality +
+                    "\nOverall: " + overall;
+        }
+    }
+}
