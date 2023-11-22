@@ -22,7 +22,7 @@ Análise Comparativa: Os fãs de futebol podem comparar estatísticas de jogador
 
 ## Uso
 
-- Como usar o projeto, com exemplos, se possível.
+- Basta seguir as instruções, autoexplicativo.
 
 ## Contribuição
 
